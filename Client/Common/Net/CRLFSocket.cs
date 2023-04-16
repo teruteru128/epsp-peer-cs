@@ -271,9 +271,11 @@ namespace Client.Common.Net
                         }
 
                         // truncate.
-                        byte[] newBuffer = new byte[buffer.Length - i - 2];
-                        Array.Copy(buffer, i + 2, newBuffer, 0, newBuffer.Length);
-                        buffer = newBuffer;
+                        int newLength = buffer.Length - i - 2;
+                        if (newLength < 0)
+                            newLength = 0;
+                        Array.Copy(buffer, i + 2, buffer, 0, newLength);
+                        Array.Resize(ref buffer, newLength);
 
                         cont = true;
                         break;
